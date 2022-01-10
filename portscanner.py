@@ -1,0 +1,40 @@
+import socket  #socket is used to connect to the port over internet
+from IPy import IP  #for converting domains into IP's
+
+
+class PortScan():
+    banners = []
+    open_ports = []
+
+    def __init__(self, target, port_num):
+        self.target = target
+        self.port_num = port_num
+
+    def scan(self):
+        for port in range(1, self.port_num):
+            self.scan_port(self.port_num)
+
+
+    def check_ip(self):
+        try:
+            IP(self.target)
+            return self.target
+        except ValueError:
+            return socket.gethostbyname(self.target)
+
+
+    def scan_port(self, port):
+        try:
+            converted_ip = self.check_ip()
+            sock = socket.socket()
+            sock.settimeout(0.5)  # to make the scanning faster
+            sock.connect((converted_ip, port))
+            self.open_ports.append(port)
+            try:
+                banner = sock.recv(1024).decode().strip('\n').strip('\r')
+                self.banners.append(banner)
+            except:
+                self.banners.append(' ')
+            sock.close()
+        except:
+            pass
