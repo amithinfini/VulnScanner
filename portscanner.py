@@ -12,7 +12,7 @@ class PortScan():
 
     def scan(self):
         for port in range(1, self.port_num):
-            self.scan_port(self.port_num)
+            self.scan_port(port)
 
 
     def check_ip(self):
